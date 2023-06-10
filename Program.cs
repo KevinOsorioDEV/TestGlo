@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Numerics;
+using System.Text;
 
 namespace TestGlo
 {
@@ -6,7 +8,79 @@ namespace TestGlo
     {
         static void Main(string[] args)
         {
-            NumeroMaximo();
+            Console.WriteLine(EliminarDuplicados());
+        }
+
+        static string EliminarDuplicados()
+        {
+            Console.WriteLine("ELIMINA DUCPLICADOS");
+            Console.Write("Ingrese su frase -> ");
+            string frase = Console.ReadLine() ?? "";
+
+            string resultado = "";
+
+            foreach (char letra in frase)
+            {
+                if (!resultado.Contains(letra))
+                {
+                    resultado += letra;
+                }
+            }
+            return resultado;
+        
+        }
+
+
+        static string InvertirPalabra()
+        {
+            Console.WriteLine("INVERTIR PALABRA!");
+            Console.Write("Ingrese su palabra -> ");
+            string palabra = Console.ReadLine() ?? "";
+
+            string palabraInvertida = "";
+
+            for(int i = palabra.Length - 1; i >= 0; i--)
+            {
+                palabraInvertida += palabra[i];
+            }
+
+            return $"{palabraInvertida}";
+        }
+
+        static string CalcularFactorial()
+        {
+            try{
+                Console.WriteLine("CALCULAR FACTORIAL!");
+                Console.Write("Ingrese su numero -> ");
+                int numero = Convert.ToInt32(Console.ReadLine());
+
+                BigInteger factorial = 1;
+
+                for (int i = 1; i <= numero; i++)
+                {
+                    factorial *= i;
+                }
+
+                return $"{factorial}";
+
+            } catch (Exception e) {
+                return $"Debes ingresar un numero.\n{e.Message}";
+            }
+        }
+
+        static bool EsAnamgrama(string palabra1 = "", string palabra2 = "")
+        {
+            List<char> listaPalabra1 = palabra1.ToLower().ToList();
+            List<char> listaPalabra2 = palabra2.ToLower().ToList();
+
+            var listaPalabra1Ordenada = listaPalabra1.OrderBy(pal => pal);
+            var listaPalabra2Ordenada = listaPalabra2.OrderBy(pal => pal);
+
+            if (listaPalabra1Ordenada.SequenceEqual(listaPalabra2Ordenada)){
+                return true;
+            }
+
+            return false;
         }
 
         static void NumeroMaximo()
@@ -275,19 +349,21 @@ namespace TestGlo
                     return ("Debe ser un numero entero mayor a uno, el numero uno no es primo.");
 
                 int vecesDivisibles = 0;
-                for (int i = 1; i <= numero; i++)
+                for (int i = 1; i < numero; i++)
                 {
                     if (numero % i == 0)
                     {
                         vecesDivisibles++;
 
+                        if (vecesDivisibles > 2)
+                        {
+                            return ($"El numero {numero} no es primo");
+                        }
                     }
                 }
 
-                if (vecesDivisibles == 2)
-                    return ($"El numero {numero} es primo");
 
-                return ($"El numero {numero} no es primo");
+                return ($"El numero {numero} es primo");
             }
             catch (Exception ex)
             {
