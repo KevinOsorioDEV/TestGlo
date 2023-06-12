@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Numerics;
 using System.Text;
 
@@ -8,7 +9,135 @@ namespace TestGlo
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(EliminarDuplicados());
+            CifradoCesar();
+        }
+
+        static void CifradoCesar()
+        {
+            Console.WriteLine("CIFRADO CESAR!");
+            Console.Write("Ingrese la frase a cifrar -> ");
+            string frase = Console.ReadLine() ?? "";
+            frase = frase.ToLower();
+            Console.Write("Ingrese la clave de cifrado, este debe ser un numero entero del 1 - 10 -> ");
+            int claveCifrado = Convert.ToInt32(Console.ReadLine());
+
+            List<char> letras = new(){ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+            string fraseCifrada = "";
+
+            foreach (var item in frase)
+            {
+                if (letras.IndexOf(item) == -1)
+                {
+                    fraseCifrada += item;
+                    continue;
+                }
+
+                int indexLetra = letras.IndexOf(item);
+                
+                if(indexLetra + claveCifrado > 27)
+                {
+                    indexLetra = indexLetra + claveCifrado - 27;
+                    fraseCifrada += Convert.ToString(letras[indexLetra]);
+                    continue;
+                }
+
+                fraseCifrada += Convert.ToString(letras[indexLetra + claveCifrado]);
+            }
+
+            Console.WriteLine(fraseCifrada);
+
+        }
+
+        static long FiboRecursivo(int n)
+        {
+            if (n <= 0)
+            {
+                return 0;
+            }
+            else if (n == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return FiboRecursivo(n - 1) + FiboRecursivo(n - 2);
+            }
+
+        }
+
+        static void Fibonacci()
+        {
+            Console.WriteLine("FIBONACCI!");
+            Console.WriteLine("Hasta donde quieres que llegue la serie de fibonacci? --> ");
+            int limite = Convert.ToInt32(Console.ReadLine());
+
+            int a = 0;
+            int b = 1;
+
+            Console.WriteLine(a);
+            Console.WriteLine(b);
+
+            for (int i = 0; i < limite; i++) {
+                int fibo = a + b;
+                Console.WriteLine(fibo);
+                a = b;
+                b = fibo;
+            }
+
+        }
+
+        static void AdivinaElNumero()
+        {
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
+            Random randon = new();
+            int numeroAleatorio = randon.Next(1, 100);
+
+            Console.WriteLine("ADIVINA EL NUMERO!");
+            Console.Write("Ingresa un numero entero entre el 1 - 100 --> ");
+
+            try
+            {
+                int contador = 0;
+                int numero = Convert.ToInt32(Console.ReadLine());
+
+                while (numero != numeroAleatorio)
+                {
+                    
+
+                    if (numero > 100 || numero < 1)
+                    {
+                        Console.WriteLine("El numero debe estar entre 1 - 100");
+                        Console.Write("-->");
+                        numero = Convert.ToInt32(Console.ReadLine());
+                        contador++;
+                    }
+
+                    if (numero < numeroAleatorio)
+                    {
+                        Console.WriteLine("El numero debe ser mayor.");
+                        Console.Write("--> ");
+                        numero = Convert.ToInt32(Console.ReadLine());
+                        contador++;
+                    }
+                    if (numero > numeroAleatorio)
+                    {
+                        Console.WriteLine("El numero debe ser menor.");
+                        Console.Write("--> ");
+                        numero = Convert.ToInt32(Console.ReadLine());
+                        contador++;
+                    }
+                }
+
+                stopwatch.Stop();
+                int Tiempo = stopwatch.Elapsed.Seconds;
+                Console.WriteLine($"Felicitaciones adivinaste, el numero era - {numeroAleatorio} -\nIntentos -> {contador}\nTiempo ->{Tiempo} - Seg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Solo puedes ingresar numeros.\n{ex.Message}");
+            }
         }
 
         static string EliminarDuplicados()
